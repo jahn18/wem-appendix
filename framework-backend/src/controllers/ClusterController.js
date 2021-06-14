@@ -8,30 +8,29 @@ const bodyParser = require('body-parser');
 router.use(bodyParser.urlencoded({extended: true}));
 router.use(bodyParser.json());
 
-const CURRENT_WORKING_DIRECTORY = "/Users/<anon-author>/repos/wem/wem-server/src/controllers";
+const CURRENT_WORKING_DIRECTORY = "/home/john/research/ReSeSS/wem-appendix/framework-backend/src/controllers";
 
-router.get('/cluster/:projectname/:static/:dynamic/:classnames/:classterms/:commit/:contributor', async (req, res) => {
+router.get('/:projectname/:static/:dynamic/:classnames/:classterms/:commit/:contributor', async (req, res) => {
     try {
-
         console.log(req.params);
 
-        let { 
+        let {
           projectname,
-          static, 
-          dynamic, 
-          classnames, 
-          classterms, 
-          commit, 
+          static,
+          dynamic,
+          classnames,
+          classterms,
+          commit,
           contributor
         } = req.params;
 
         let scriptArguments = `${projectname} ${static} ${dynamic} ${classnames} ${classterms} ${commit} ${contributor}`;
-           
+
 
         let scriptPath = '../../weightGraphScripts/generateWeightedGraphWithArguments.sh';
 
         let shellOutput = await execFileSync(`${scriptPath}`, scriptArguments.split(" "), {
-          cwd: CURRENT_WORKING_DIRECTORY, 
+          cwd: CURRENT_WORKING_DIRECTORY,
           encoding: "utf-8"
         });
 
@@ -49,19 +48,19 @@ router.get('/cluster/:projectname', async (req, res) => {
     try {
         let { weights } = req.body;
 
-        let { 
-          static, 
-          dynamic, 
-          classnames, 
-          classterms, 
-          commit, 
+        let {
+          static,
+          dynamic,
+          classnames,
+          classterms,
+          commit,
           contributor
         } = req.params;
 
         const { projectname } = req.params;
 
         let scriptArguments = `${projectname} ${static} ${dynamic} ${classnames} ${classterms} ${commit} ${contributor}`;
-           
+
 
         let scriptPath = '../../weightGraphScripts/generateWeightedGraphWithArguments.sh';
 
